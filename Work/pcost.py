@@ -3,14 +3,8 @@ import report
 
 def portfolio_cost(filename: str):
     """Computes the total cost (shares*price) of a portfolio file"""
-    total_cost = 0.0
-
     portfolio = report.read_portfolio(filename)
-
-    for holding in portfolio:
-        total_cost += holding.cost
-
-    return total_cost
+    return portfolio.total_cost
 
 
 def main(argv):
