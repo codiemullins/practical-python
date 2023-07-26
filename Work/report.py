@@ -1,5 +1,6 @@
 import fileparse
 import stock
+import tableformat
 
 
 def read_portfolio(filename):
@@ -15,29 +16,59 @@ def read_prices(filename):
         return dict(pricelist)
 
 
-def portfolio_report(portfolio_filename, prices_filename):
-    portfolio = read_portfolio(portfolio_filename)
-    prices = read_prices(prices_filename)
-
-    headers = ("Name", "Shares", "Price", "Change")
-    print("%10s %10s %10s %10s" % headers)
-    print(("-" * 10 + " ") * len(headers))
+def make_report_data(portfolio, prices):
+    reportdata = []
     for holding in portfolio:
-        price = "$" + f"{prices[holding.name]:.2f}"
-        change = prices[holding.name] - holding.price
-        print(f"{holding.name:>10s} {holding.shares:>10d} {price:>10s} {change:>10.2f}")
+        current_price = prices[holding.name]
+        change = current_price - holding.price
+        summary = (holding.name, holding.shares, current_price, change)
+        reportdata.append(summary)
+    return reportdata
+
+
+def print_report(reportdata, formatter):
+    """
+    Print a nicely formatted table from a list of (name, shares, price, change) tuples.
+    """
+    # headers = ("Name", "Shares", "Price", "Change")
+    # print("%10s %10s %10s %10s" % headers)
+    # print(("-" * 10 + " ") * len(headers))
+    formatter.headings(["Name", "Shares", "Price", "Change"])
+    for name, shares, price, change in reportdata:
+        # price = "$" + f"{price:.2f}"
+        # print(f"{name:>10s} {shares:>10d} {price:>10s} {change:>10.2f}")
+        rowdata = [name, str(shares), f"{price:.2f}", f"{change:.2f}"]
+        formatter.row(rowdata)
+
+
+def portfolio_report(portfoliofile, pricefile, fmt="txt"):
+    portfolio = read_portfolio(portfoliofile)
+    prices = read_prices(pricefile)
+
+    report = make_report_data(portfolio, prices)
+
+    # Print it out
+    formatter = tableformat.create_formatter(fmt)
+    print_report(report, formatter)
 
 
 def main(argv):
     if len(argv) == 2:
-        portfolio_filename = argv[1]
+        portfoliofile = argv[1]
     else:
-        portfolio_filename = "Data/portfolio.csv"
+        portfoliofile = "Data/portfolio.csv"
+
     if len(argv) == 3:
-        prices_filename = argv[2]
+        pricefile = argv[2]
     else:
-        prices_filename = "Data/prices.csv"
-    portfolio_report(portfolio_filename, prices_filename)
+        pricefile = "Data/prices.csv"
+
+    if len(argv) == 4:
+        fmt = argv[3]
+    else:
+        fmt = "txt"
+
+    portfolio_report(portfoliofile, pricefile, fmt=fmt)
 
 
 if __name__ == "__main__":
