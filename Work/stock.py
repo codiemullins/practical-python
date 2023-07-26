@@ -4,6 +4,7 @@ class Stock:
         self.shares = shares
         self.price = price
 
+    @property
     def cost(self):
         return self.shares * self.price
 

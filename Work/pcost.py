@@ -8,7 +8,7 @@ def portfolio_cost(filename: str):
     portfolio = report.read_portfolio(filename)
 
     for holding in portfolio:
-        total_cost += holding.cost()
+        total_cost += holding.cost
 
     return total_cost
 
