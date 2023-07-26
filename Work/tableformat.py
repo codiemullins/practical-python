@@ -70,3 +70,13 @@ def create_formatter(fmt):
         raise RuntimeError(f"Unknown format {fmt}")
 
     return formatter
+
+
+def print_table(objects, colnames, formatter):
+    """
+    Make a nicely formatted table from a list of objects and attribute names.
+    """
+    formatter.headings(colnames)
+    for obj in objects:
+        rowdata = [str(getattr(obj, colname)) for colname in colnames]
+        formatter.row(rowdata)
