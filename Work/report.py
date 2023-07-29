@@ -1,6 +1,5 @@
 import fileparse
 import tableformat
-from stock import Stock
 from portfolio import Portfolio
 
 
@@ -56,6 +55,13 @@ def portfolio_report(portfoliofile, pricefile, fmt="txt"):
 
 
 def main(argv):
+    import logging
+    logging.basicConfig(
+        filename ='app.log',
+        filemode ='w',
+        level    = logging.WARNING,
+    )
+    
     if len(argv) == 2:
         portfoliofile = argv[1]
     else:
