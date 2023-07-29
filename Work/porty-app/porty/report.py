@@ -1,7 +1,5 @@
-import fileparse
-import tableformat
-from portfolio import Portfolio
-
+from . import fileparse, tableformat
+from .portfolio import Portfolio
 
 def read_portfolio(filename, **opts):
     '''
@@ -62,17 +60,17 @@ def main(argv):
         level    = logging.WARNING,
     )
     
-    if len(argv) == 2:
+    if len(argv) >= 2:
         portfoliofile = argv[1]
     else:
         portfoliofile = "Data/portfolio.csv"
 
-    if len(argv) == 3:
+    if len(argv) >= 3:
         pricefile = argv[2]
     else:
         pricefile = "Data/prices.csv"
 
-    if len(argv) == 4:
+    if len(argv) >= 4:
         fmt = argv[3]
     else:
         fmt = "txt"

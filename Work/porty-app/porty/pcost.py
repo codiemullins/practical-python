@@ -1,4 +1,4 @@
-import report
+from . import report
 
 
 def portfolio_cost(filename: str):
